@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>桂林 · 下周7天超详细旅行攻略</title>
+<style>
+  :root{
+    --bg:#0b1020;               /* 背景深色基底（暗黑友好） */
+    --panel:#121933;
+    --card:#11182f;
+    --text:#e9eefb;
+    --muted:#9fb1d8;
+    --brand1:#20c997;           /* 祖母绿（桂林山水） */
+    --brand2:#3bc9db;           /* 碧湖蓝 */
+    --accent:#ffd43b;           /* 点缀 */
+    --ok:#51cf66; --warn:#fab005; --err:#ff6b6b;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#f5f7fb; --panel:#ffffff; --card:#ffffff; 
+      --text:#162033; --muted:#5a6c8f;
+      --shadow:0 8px 24px rgba(10,40,80,.08);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:linear-gradient(135deg,var(--bg),#0e1530 60%,#0a1128);}
+  body{font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;color:var(--text);}
+  .container{max-width:1200px;margin:0 auto;padding:24px;}
+  .hero{
+    position:relative;border-radius:28px;padding:32px 28px;
+    background:
+      radial-gradient(1200px 400px at 10% -10%, rgba(59,201,219,.25), transparent 60%),
+      radial-gradient(800px 400px at 100% 0%, rgba(32,201,151,.20), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,.06), transparent),
+      var(--panel);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .hero h1{margin:0 0 6px;font-size:clamp(26px,4.5vw,46px);letter-spacing:.5px}
+  .hero p.sub{margin:6px 0 14px;color:var(--muted)}
+  .badges{display:flex;gap:10px;flex-wrap:wrap}
+  .badge{font-size:13px;padding:6px 10px;border-radius:999px;background:rgba(59,201,219,.14);border:1px solid rgba(59,201,219,.35)}
+  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .btn{
+    appearance:none;border:0;cursor:pointer;border-radius:12px;
+    padding:12px 16px;font-weight:600;letter-spacing:.2px;
+    background:linear-gradient(135deg,var(--brand1),var(--brand2));
+    color:#062019;box-shadow:0 8px 20px rgba(59,201,219,.25);
+    transition:transform .08s ease,filter .2s ease;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn.outline{
+    background:transparent;color:var(--brand2);
+    border:1px solid rgba(59,201,219,.45);
+  }
+
+  .grid{display:grid;gap:18px;margin-top:22px}
+  @media (min-width:960px){ .grid{grid-template-columns:280px 1fr;} }
+
+  .toc{position:sticky;top:16px;background:var(--panel);border-radius:20px;padding:14px;box-shadow:var(--shadow)}
+  .toc h3{margin:6px 8px 8px;font-size:15px;color:var(--muted)}
+  .toc a{display:flex;gap:8px;align-items:center;padding:10px 12px;margin:6px 0;border-radius:12px;color:var(--text);text-decoration:none;border:1px solid transparent}
+  .toc a:hover{background:rgba(59,201,219,.10);border-color:rgba(59,201,219,.25)}
+  .toc small{color:var(--muted)}
+
+  section.card{background:var(--panel);border-radius:24px;box-shadow:var(--shadow);padding:18px 18px}
+  section.card h2{margin:6px 6px 2px;font-size:22px}
+  section.card p.lead{margin:2px 6px 14px;color:var(--muted)}
+
+  .day{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:14px;margin:10px 0}
+  .day .top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .pill{font-size:12px;border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:4px 10px;color:var(--muted)}
+  .day h3{margin:6px 0 8px;font-size:18px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+  .tag{font-size:12px;border-radius:8px;padding:4px 8px;background:rgba(32,201,151,.12);border:1px solid rgba(32,201,151,.35);color:#c7ffe6}
+  @media (prefers-color-scheme: light){ .tag{color:#0b6b4f} }
+  .rows{display:grid;gap:8px;margin-top:10px}
+  .row{display:grid;grid-template-columns:100px 1fr;gap:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.10)}
+  .row .k{color:var(--muted);font-size:13px}
+  .row .v{color:var(--text)}
+  .tips{display:grid;gap:8px;margin-top:10px}
+  .tip{padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.10)}
+  .tip.ok{background:rgba(81,207,102,.12);border-color:rgba(81,207,102,.35)}
+  .tip.warn{background:rgba(250,176,5,.12);border-color:rgba(250,176,5,.35)}
+  .tip.err{background:rgba(255,107,107,.10);border-color:rgba(255,107,107,.30)}
+  .two{display:grid;gap:12px}
+  @media (min-width:860px){ .two{grid-template-columns:1fr 1fr;} }
+
+  .checklist{display:grid;gap:8px;margin-top:10px}
+  .checklist label{
+    display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px;
+  }
+  .checklist input{transform:translateY(2px)}
+  .small{font-size:13px;color:var(--muted)}
+
+  .footer{opacity:.9;margin:28px 0 8px;text-align:center;color:var(--muted)}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);margin:18px 0}
+
+  /* 打印样式 */
+  @media print{
+    .toc,.cta{display:none}
+    .container{max-width:100%;padding:0}
+    body{background:white;color:#111}
+    section.card, .day{box-shadow:none;border:1px solid #ddd}
+  }
+  /* 小图标（内嵌SVG） */
+  .icon{width:18px;height:18px;display:inline-block;vertical-align:-3px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <h1>桂林 · 下周 7 天超详细旅行攻略</h1>
+      <p class="sub">自动生成下周一到周日的日期｜覆盖桂林市区—阳朔—龙脊梯田｜含交通、餐饮、预算、备选、避坑与装备清单</p>
+      <div class="badges">
+        <span class="badge">推荐人群：第一次去 / 摄影 / 亲子 / 轻徒步</span>
+        <span class="badge">强度：中等</span>
+        <span class="badge">最佳季节：3–5月 / 9–11月</span>
+      </div>
+      <div class="cta">
+        <button class="btn" onclick="window.print()">🖨️ 一键打印 / 导出 PDF</button>
+        <button class="btn outline" id="copyList">📋 复制行前清单</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- 目录 -->
+      <nav class="toc">
+        <h3>目录</h3>
+        <a href="#plan">📌 行程总览 <small id="dateSpan"></small></a>
+        <a href="#detail">🗺️ 每日行程（7天）</a>
+        <a href="#budget">💰 预算与花费估算</a>
+        <a href="#food">🍜 必吃美食清单</a>
+        <a href="#pack">🎒 行前装备清单</a>
+        <a href="#tips">⚠️ 避坑与小贴士</a>
+      </nav>
+
+      <main class="">
+        <!-- 总览 -->
+        <section id="plan" class="card">
+          <h2>📌 行程总览 <span class="pill" id="rangePill"></span></h2>
+          <p class="lead">路线：桂林市区（象鼻山/两江四湖/芦笛岩）→ 阳朔（遇龙河/十里画廊/银子岩/西街/兴坪渔村）→ 龙脊梯田（平安/金坑大寨）。城市间以高铁/大巴为主，县内以网约车/骑行/竹筏为主。</p>
+          <div class="two">
+            <div class="day">
+              <div class="top">
+                <h3>核心交通建议</h3><span class="pill">到达：桂林两江国际机场 / 桂林站 / 桂林北站</span>
+              </div>
+              <div class="rows">
+                <div class="row"><div class="k">市区 ⇄ 阳朔</div><div class="v">高铁 28–40 分钟（桂林/桂林北 → 阳朔站），或大巴约 1.5h；阳朔站需转车 25–35 分钟至县城/西街。</div></div>
+                <div class="row"><div class="k">阳朔 ⇄ 兴坪</div><div class="v">县城汽车站/网约车 40–60 分钟；骑行去十里画廊/遇龙河更灵活。</div></div>
+                <div class="row"><div class="k">桂林 ⇄ 龙脊</div><div class="v">桂林汽车站直达平安/大寨约 2–3 小时（山路弯多，晕车带药）。</div></div>
+              </div>
+            </div>
+            <div class="day">
+              <div class="top">
+                <h3>住宿建议</h3><span class="pill">建议2+3+2晚（市区/阳朔/龙脊）</span>
+              </div>
+              <div class="rows">
+                <div class="row"><div class="k">桂林市区 2晚</div><div class="v">两江四湖/中心广场附近步行可达景点，夜游方便。</div></div>
+                <div class="row"><div class="k">阳朔 3晚</div><div class="v">西街闹中取静的小巷民宿，或遇龙河/十里画廊沿线度假酒店（便于骑行/竹筏）。</div></div>
+                <div class="row"><div class="k">龙脊 2晚</div><div class="v">平安/大寨山顶观景房，日落/日出步行可达（带轻便行李上山）。</div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 每日行程 -->
+        <section id="detail" class="card">
+          <h2>🗺️ 每日行程（7天）</h2>
+          <p class="lead">每一天都包含：当日节奏、必看点、交通/餐饮建议、预算、备用方案与摄影位。你可按天气在阳朔/龙脊的天数间微调。</p>
+
+          <!-- Day 1 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d1">D1｜抵达桂林 · 两江四湖夜游</h3>
+              <span class="tag">轻松</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">抵达 → 酒店放行李 → 正阳步行街/中心广场 → 两江四湖夜游（可选船票）</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">日月双塔夜景、榕杉湖灯光、水上古桥群、城市夜色</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">米粉初体验（晚到也能吃）｜夜宵：啤酒鱼（清淡版更适合首日）</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">机场大巴/地铁/网约车至市中心；夜游码头步行可达</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">餐饮 80–120｜夜游船 160–220（可视淡旺季）</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 船票提前预定可选好时间段；如遇下雨，夜游照常且更有倒影氛围。</div>
+              <div class="tip warn">⚠️ 夜游散团点与上船点可能不同，留意导航与打车位置。</div>
+            </div>
+          </div>
+
+          <!-- Day 2 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d2">D2｜象鼻山·芦笛岩·老码头漫步</h3>
+              <span class="tag">城市慢游</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">象鼻山公园 → 伏波山/叠彩山（二选一）→ 芦笛岩 → 杉湖/老码头傍晚散步</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">象鼻山打卡、溶洞奇观灯光秀、桂林城景远眺</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">午：田螺酿/漓江虾｜晚：椿记烧鹅/地方家常菜</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">市内公交/网约车最省心；芦笛岩离市区 6–7km</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">门票合计 150–220（视联票）｜餐饮 100–150</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 溶洞拍照建议用广角 + 手电补光，避开强对比光位。</div>
+              <div class="tip warn">⚠️ 象鼻山内外拍点众多，若不入园也可在滨江路远景构图。</div>
+            </div>
+          </div>
+
+          <!-- Day 3 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d3">D3｜桂林 → 阳朔 · 西街夜生活</h3>
+              <span class="tag">转场 + 探索</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">高铁/大巴前往阳朔 → 入住（西街或十里画廊一带）→ 骑行熟悉路线 → 西街夜市/酒吧</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">喀斯特群峰、乡村田园小路、江畔黄昏</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">午：阳朔啤酒鱼/柚子皮/芋头扣肉｜晚：西街各国小馆</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">阳朔站→县城需转接驳；或桂林直达大巴至阳朔汽车站</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">交通 30–90（视方式）｜餐饮 120–180</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 入住后先熟悉西街至十里画廊骑行动线，第二天更顺手。</div>
+              <div class="tip warn">⚠️ 西街夜间人多，财物与酒精饮品安全注意。</div>
+            </div>
+          </div>
+
+          <!-- Day 4 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d4">D4｜遇龙河竹筏 · 十里画廊骑行 · 银子岩</h3>
+              <span class="tag">经典阳朔</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">早竹筏（遇龙河上/下游二选一）→ 十里画廊骑行（图腾古道/大榕树/月亮山沿线）→ 下午银子岩溶洞</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">清澈河面、倒影山峦、田园人家、洞内石幔奇景</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">午：沿线农家菜｜晚：返回县城小吃/侗族酸汤火锅</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">竹筏需预约/现场排队；骑行租电助力更轻松；银子岩在县区外需打车/小巴</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">竹筏 140–260（段线不同）｜银子岩 70–90｜餐饮 120</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 竹筏更推荐清晨或傍晚顺光时段；带防水袋与轻薄雨衣。</div>
+              <div class="tip warn">⚠️ 高温季注意补水与防晒；骑行尽量走机耕小路更安全有景。</div>
+            </div>
+          </div>
+
+          <!-- Day 5 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d5">D5｜兴坪古镇 · 漓江（九马画山/黄布倒影）· 相公山日落</h3>
+              <span class="tag">山水大片</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">早去兴坪古镇/渔村散步 → 漓江徒步或电动竹筏（合法航段）→ 傍晚登相公山拍日落（或次日清晨看日出）</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">二十元背景山水、渔火人家、相公山峰丛云海</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">午：兴坪粉店/江边小馆｜晚：返回阳朔或住兴坪（方便清晨机位）</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">阳朔—兴坪车程 40–60 分钟；相公山山道规范停车后需徒步/接驳</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">兴坪/相公山门票及接驳 60–120｜餐饮 120</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 相公山更看天气与云量；若阴雨，可改银子岩/蝴蝶泉等室内点。</div>
+              <div class="tip warn">⚠️ 漓江航段需遵守当地管理，避免上非正规竹筏。</div>
+            </div>
+          </div>
+
+          <!-- Day 6 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d6">D6｜阳朔 → 龙脊梯田（平安/大寨）· 日落</h3>
+              <span class="tag">转场 + 轻徒步</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">早退房 → 车赴龙胜 → 入住山里观景民宿 → 下午轻徒步至观景点看日落</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">层层梯田、苗侗风情、云雾流光</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">午：途中服务区简单补给｜晚：山里长桌宴/竹筒饭</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">阳朔/桂林出发班车或包车 2–3 小时；景区内观光车上山后再步行</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">门票+观光车 120–150｜餐饮 120｜住山顶行李托运 30–50</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 只带轻便背包上山，把大件行李寄存在山脚更省力。</div>
+              <div class="tip warn">⚠️ 山路弯多容易晕车，提前吃晕车药；雨后步道防滑。</div>
+            </div>
+          </div>
+
+          <!-- Day 7 -->
+          <div class="day">
+            <div class="top">
+              <h3 id="d7">D7｜龙脊日出 · 返回桂林/出发地</h3>
+              <span class="tag">收官</span><span class="pill"><span class="date"></span></span>
+            </div>
+            <div class="rows">
+              <div class="row"><div class="k">动线</div><div class="v">清晨看日出 → 回民宿早餐 → 下山返桂林 → 返程（火车/飞机）</div></div>
+              <div class="row"><div class="k">看点</div><div class="v">金坑/平安观景台云海线条，天气好能拍到光影层次</div></div>
+              <div class="row"><div class="k">餐饮</div><div class="v">当地腊味/土鸡汤｜返程路上简单补给</div></div>
+              <div class="row"><div class="k">交通</div><div class="v">景区车下山接驳 → 桂林站/机场</div></div>
+              <div class="row"><div class="k">预算</div><div class="v">返程交通视城市而定；桂林—机场打车 40–60 分钟</div></div>
+            </div>
+            <div class="tips">
+              <div class="tip ok">✅ 若返程较晚，可在桂林市区再补拍日景/买手信。</div>
+              <div class="tip warn">⚠️ 山区天气多变，给相机/手机准备干燥包与防潮。</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 预算 -->
+        <section id="budget" class="card">
+          <h2>💰 预算与花费估算</h2>
+          <p class="lead">以下为人均参考（不含往返桂林的大交通），旺季/节假日会上浮。</p>
+          <div class="two">
+            <div class="day">
+              <h3>基础预算（人均）</h3>
+              <div class="rows">
+                <div class="row"><div class="k">市内交通</div><div class="v">300–500（高铁/大巴/网约车/接驳）</div></div>
+                <div class="row"><div class="k">门票游玩</div><div class="v">500–900（夜游+竹筏+洞穴+梯田+相公山等）</div></div>
+                <div class="row"><div class="k">餐饮</div><div class="v">700–1100（按 100–160/天）</div></div>
+                <div class="row"><div class="k">住宿</div><div class="v">1200–2200（视星级/景观/季节）</div></div>
+                <div class="row"><div class="k">合计区间</div><div class="v"><b>2700–4700</b> 元/人（7天）</div></div>
+              </div>
+            </div>
+            <div class="day">
+              <h3>省钱/增值思路</h3>
+              <div class="tips">
+                <div class="tip ok">✅ 非必要不跟团，分段预约更灵活更省。</div>
+                <div class="tip ok">✅ 城区饭馆午市更划算，晚餐避开网红排队店。</div>
+                <div class="tip warn">⚠️ 竹筏/相公山等高热项目旺季价高，尽量早订。</div>
+                <div class="tip err">⛔ 谨慎超低价“一日游”，防购物坑。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 美食 -->
+        <section id="food" class="card">
+          <h2>🍜 必吃美食清单</h2>
+          <div class="two">
+            <div class="day">
+              <h3>桂林市区</h3>
+              <ul class="checklist">
+                <li>桂林米粉（卤蛋/脆皮/酸笋按喜好）</li>
+                <li>田螺酿｜椿记烧鹅｜漓江虾</li>
+                <li>马蹄糕/荔浦芋制品</li>
+              </ul>
+            </div>
+            <div class="day">
+              <h3>阳朔 & 龙脊</h3>
+              <ul class="checklist">
+                <li>啤酒鱼（清淡少辣版更通用）</li>
+                <li>柚子皮/芋头扣肉/侗族酸汤火锅</li>
+                <li>竹筒饭/长桌宴/糍粑</li>
+              </ul>
+            </div>
+          </div>
+          <p class="small">小贴士：米粉讲究“卤水味”，第一次可点“全配”，再按喜好调整配菜与酸辣度。</p>
+        </section>
+
+        <!-- 装备 -->
+        <section id="pack" class="card">
+          <h2>🎒 行前装备清单</h2>
+          <div class="two">
+            <div class="day">
+              <h3>必备</h3>
+              <div class="checklist" id="listA">
+                <label><input type="checkbox" /> 身份证/学生证（部分景区优惠）</label>
+                <label><input type="checkbox" /> 舒适徒步鞋（抓地/防滑）+ 凉拖</label>
+                <label><input type="checkbox" /> 轻便雨衣/防晒衣/遮阳帽/墨镜</label>
+                <label><input type="checkbox" /> 防蚊液/创可贴/晕车药/肠胃药</label>
+                <label><input type="checkbox" /> 手机防水袋/相机电池与干燥包</label>
+                <label><input type="checkbox" /> 小背包（山里只带轻装）+ 行李寄存袋</label>
+              </div>
+            </div>
+            <div class="day">
+              <h3>加分</h3>
+              <div class="checklist" id="listB">
+                <label><input type="checkbox" /> 轻量三脚架（相公山/龙脊日出）</label>
+                <label><input type="checkbox" /> 头灯（清晨/傍晚山路更安全）</label>
+                <label><input type="checkbox" /> 速干毛巾/折叠水壶/能量补给</label>
+                <label><input type="checkbox" /> 小型随身药盒（山里难买）</label>
+              </div>
+            </div>
+          </div>
+          <div class="cta"><button class="btn outline" id="copyBoth">复制两份清单</button></div>
+        </section>
+
+        <!-- 避坑 -->
+        <section id="tips" class="card">
+          <h2>⚠️ 避坑与小贴士</h2>
+          <div class="tips">
+            <div class="tip warn">⚠️ 山区天气善变，遇雨别硬爬相公山/长线徒步，改室内洞穴/博物馆行程。</div>
+            <div class="tip warn">⚠️ 非正规竹筏/黑车谨慎；尽量走官方购票/接驳。</div>
+            <div class="tip ok">✅ 阳朔骑行优先选择电助力，走乡间支线更安全好看。</div>
+            <div class="tip ok">✅ 龙脊观景住宿优先“步行 15 分钟内可到机位”的民宿。</div>
+          </div>
+          <div class="divider"></div>
+          <p class="small">天气应对：若 <b>连续降雨</b>，把“溶洞/博物馆/两江四湖船游”前置；若 <b>晴且能见度好</b>，把“相公山/龙脊日出日落”顶上。</p>
+        </section>
+
+        <p class="footer">© 桂林一周行程 · 生成自单文件 HTML（可在 VSCode 直接预览与打印）</p>
+      </main>
+    </div>
+  </div>
+
+<script>
+/** 计算“下周一”到“下周日”的日期，并填充到页面 */
+(function(){
+  const now = new Date();
+  const day = now.getDay(); // 周日=0
+  // 目标：下周一
+  const offsetToNextMon = ((8 - (day === 0 ? 7 : day)) % 7) || 7; // 确保至少+1周
+  const nextMon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offsetToNextMon);
+  const fmt = d => d.toLocaleDateString('zh-CN',{month:'2-digit',day:'2-digit',weekday:'short'});
+  const dates = [];
+  for(let i=0;i<7;i++){
+    const d = new Date(nextMon.getFullYear(), nextMon.getMonth(), nextMon.getDate() + i);
+    dates.push(d);
+  }
+  // 顶部区间
+  document.getElementById('rangePill').textContent = fmt(dates[0]) + " ~ " + fmt(dates[6]);
+  document.getElementById('dateSpan').textContent = "（" + fmt(dates[0]) + " 起）";
+  // 每天标题后显示日期
+  const dayBlocks = document.querySelectorAll('.day .top .pill .date');
+  dayBlocks.forEach((el,i)=> el.textContent = fmt(dates[i]||dates[dates.length-1]));
+})();
+
+/** 复制清单 */
+function copyText(txt){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(()=>alert('已复制到剪贴板')).catch(()=>fallback());
+  }else{ fallback(); }
+  function fallback(){
+    const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove(); alert('已复制到剪贴板');
+  }
+}
+document.getElementById('copyList').addEventListener('click', ()=>{
+  const items = Array.from(document.querySelectorAll('#listA label, #listB label'))
+    .map(l=>"- "+l.textContent.trim().replace(/^\s*\[.*?\]\s*/,''));
+  copyText("桂林行前清单：\n"+items.join("\n"));
+});
+document.getElementById('copyBoth').addEventListener('click', ()=>{
+  const items = Array.from(document.querySelectorAll('#listA label, #listB label'))
+    .map(l=>"- "+l.textContent.trim().replace(/^\s*\[.*?\]\s*/,''));
+  copyText(items.join("\n"));
+});
+</script>
+</body>
+</html>
